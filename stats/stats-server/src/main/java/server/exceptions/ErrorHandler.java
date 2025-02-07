@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-@RestControllerAdvice("ru.practicum.server")
+@RestControllerAdvice("server")
 public class ErrorHandler {
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Error handleBadRequestException(final BadRequestException ex) {
         return Error.builder()
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
                 .reason("Incorrectly made request.")
                 .message(ex.getMessage())
                 .timestamp(ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
