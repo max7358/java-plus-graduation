@@ -1,4 +1,4 @@
-package ru.practicum.admin.models;
+package ru.practicum.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

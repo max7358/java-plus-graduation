@@ -1,13 +1,13 @@
-package ru.practicum.admin.services;
+package ru.practicum.services;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import ru.practicum.admin.mappers.UserMapper;
-import ru.practicum.admin.models.User;
-import ru.practicum.admin.repositories.UserRepository;
-import ru.practicum.admin.params.user.UserAdminParam;
+import ru.practicum.mappers.UserMapper;
+import ru.practicum.models.User;
+import ru.practicum.repositories.UserRepository;
+import ru.practicum.user.UserAdminParam;
 import ru.practicum.dto.user.NewUserRequest;
 import ru.practicum.dto.user.UserDto;
 import ru.practicum.exceptions.NotFoundException;

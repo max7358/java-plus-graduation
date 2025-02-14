@@ -1,11 +1,11 @@
-package ru.practicum.admin.controllers;
+package ru.practicum.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.admin.services.UserService;
-import ru.practicum.admin.params.user.UserAdminParam;
+import ru.practicum.services.UserService;
+import ru.practicum.user.UserAdminParam;
 import ru.practicum.client.UserClient;
 import ru.practicum.dto.user.NewUserRequest;
 import ru.practicum.dto.user.UserDto;
