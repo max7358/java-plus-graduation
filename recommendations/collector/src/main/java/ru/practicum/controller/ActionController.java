@@ -22,7 +22,7 @@ public class ActionController extends ActionControllerGrpc.ActionControllerImplB
             kafkaProducerService.sendAction(actionAvro);
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
-        }catch (Exception e){
+        } catch (Exception e) {
             responseObserver.onError(new StatusRuntimeException(Status.fromThrowable(e)));
         }
     }
