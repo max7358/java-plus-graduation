@@ -5,9 +5,11 @@ import collector.UserAction;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Timestamp;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
+@Service
 public class CollectorClient {
     @GrpcClient("collector")
     private ActionControllerGrpc.ActionControllerBlockingStub client;

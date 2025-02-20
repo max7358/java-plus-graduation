@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.EventFullDto;
+import ru.practicum.dto.event.EventRecommendationDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.enums.EventSort;
 
@@ -27,5 +28,13 @@ public interface EventClient {
                                         HttpServletRequest request);
 
     @GetMapping("/{id}")
-    EventFullDto find(@PathVariable Long id, HttpServletRequest request);
+    EventFullDto find(@PathVariable Long id, @RequestHeader("X-EWM-USER-ID") long userId, HttpServletRequest request);
+
+    @GetMapping("/recommendations")
+    List<EventRecommendationDto> getRecommendations(
+            @RequestHeader("X-EWM-USER-ID") long userId, @RequestParam(name = "size", defaultValue = "10") int size);
+
+    @GetMapping("/events/{eventId}/like")
+    void addLike(@PathVariable Long eventId,
+                 @RequestHeader("X-EWM-USER-ID") long userId);
 }
