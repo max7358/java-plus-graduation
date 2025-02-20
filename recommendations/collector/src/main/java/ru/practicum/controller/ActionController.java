@@ -16,6 +16,7 @@ public class ActionController extends ActionControllerGrpc.ActionControllerImplB
 
     KafkaProducerService kafkaProducerService;
 
+    @Override
     public void collectAction(UserAction.UserActionProto userAction, StreamObserver<Empty> responseObserver) {
         try {
             UserActionAvro actionAvro = UserActionHandler.toAvro(userAction);
