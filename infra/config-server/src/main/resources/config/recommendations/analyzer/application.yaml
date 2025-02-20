@@ -1,0 +1,41 @@
+analyzer:
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    topic:
+      user: stats.user-actions.v1
+      event: stats.events-similarity.v1
+    consumer:
+      user-properties:
+        bootstrap.servers: ${analyzer.kafka.bootstrap-servers}
+        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        "value.deserializer": ru.practicum.deserializer.UserActionDeserializer
+        group.id: user-group
+      event-properties:
+        bootstrap.servers: ${analyzer.kafka.bootstrap-servers}
+        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        "value.deserializer": ru.practicum.deserializer.EventSimilarityDeserializer
+        group.id: event-group
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: always
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: 'jdbc:postgresql://localhost:7432/ewm-main'
+    username: postgres
+    password: postgres
+
+grpc:
+  server:
+    port: 0
+
+server:
+  port: 0
