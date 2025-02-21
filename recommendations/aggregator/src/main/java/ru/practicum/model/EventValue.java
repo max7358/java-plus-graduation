@@ -11,7 +11,7 @@ public class EventValue {
     private double eventWeightSum;
     private double eventWeightSumSquare;
 
-    public void calcWeight() {
+    public void updateSumSquareWeight() {
         this.eventWeightSumSquare = Math.sqrt(this.eventWeightSum);
     }
 }

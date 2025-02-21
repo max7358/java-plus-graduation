@@ -58,7 +58,7 @@ public class EventController implements EventClient {
         return recommendationService.getRecommendations(userId, size);
     }
 
-    @PutMapping("/events/{eventId}/like")
+    @PutMapping("/{eventId}/like")
     public void addLike(@PathVariable Long eventId,
                           @RequestHeader("X-EWM-USER-ID") long userId) {
         collectorClient.sendUserAction(userId, eventId, UserAction.ActionTypeProto.ACTION_LIKE);

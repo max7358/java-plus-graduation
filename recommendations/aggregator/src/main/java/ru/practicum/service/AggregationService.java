@@ -24,7 +24,7 @@ public class AggregationService {
         List<EventSimilarityAvro> eventSimilarityAvroList = new ArrayList<>();
 
         if (userActionMap.isEmpty()) {
-            userActionMap.put(userId, Map.of(eventId, weight));
+            userActionMap.put(userId, new HashMap<>(Map.of(eventId, weight)));
             return Optional.empty();
         }
 
@@ -33,9 +33,9 @@ public class AggregationService {
 
         if (weight > current) {
             double delta = weight - current;
-            userActionMap.put(userId, Map.of(eventId, weight));
+            userActionMap.put(userId, new HashMap<>(Map.of(eventId, weight)));
             eventStat.setEventWeightSum(eventStat.getEventWeightSum() + delta);
-            eventStat.calcWeight();
+            eventStat.updateSumSquareWeight();
             eventStatMap.put(eventId, eventStat);
 
             Map<Long, Double> val = userActionMap.get(userId);
@@ -68,7 +68,7 @@ public class AggregationService {
                 .computeIfAbsent(eventIdA, k -> new HashMap<>())
                 .computeIfAbsent(eventIdB, k -> new SimilarityValue());
         similarityStat.setEventMinSum(similarityStat.getEventMinSum() + delta);
-        similarityStat.updateSimilarity(eventStat.getEventWeightSumSquare(), eventStatMap.get(l).getEventWeightSum());
+        similarityStat.updateSimilarity(eventStat.getEventWeightSumSquare(), eventStatMap.get(l).getEventWeightSumSquare());
         eventSimilarityAvroList.add(EventSimilarityAvro.newBuilder()
                 .setEventIdA(eventIdA)
                 .setEventIdB(eventIdB)
