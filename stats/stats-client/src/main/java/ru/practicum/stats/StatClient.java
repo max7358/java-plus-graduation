@@ -1,7 +1,6 @@
 package ru.practicum.stats;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -17,8 +16,10 @@ import java.util.List;
 public class StatClient {
     private final RestClient restClient;
 
-    @Autowired
-    StatClient(@Value("${stats.server.url}") String serverUrl) {
+    @Value("http://stats-server:9090")
+    String serverUrl;
+
+    StatClient() {
         restClient = RestClient.create(serverUrl);
     }
 

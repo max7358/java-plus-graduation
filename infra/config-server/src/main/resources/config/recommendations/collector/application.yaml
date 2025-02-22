@@ -1,0 +1,24 @@
+collector:
+  kafka:
+    topic:
+      user: stats.user-actions.v1
+    producer:
+      properties:
+        "bootstrap.servers": "localhost:9092"
+        "key.serializer": org.apache.kafka.common.serialization.StringSerializer
+        "value.serializer": ru.practicum.serializer.GeneralAvroSerializer
+
+logging:
+  level:
+    ru.yandex.practicum: TRACE
+    org.apache.kafka: ERROR
+
+grpc:
+  server:
+    port: 0
+  client:
+    collector:
+      address: 'discovery:///collector'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext

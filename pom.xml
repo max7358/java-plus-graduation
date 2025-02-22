@@ -15,7 +15,8 @@
         <module>infra</module>
 		<module>core</module>
 		<module>stats</module>
-	</modules>
+        <module>recommendations</module>
+    </modules>
 
     <groupId>ru.practicum</groupId>
 	<artifactId>explore-with-me</artifactId>
@@ -26,6 +27,12 @@
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
+		<kafka-clients.version>3.6.1</kafka-clients.version>
+		<avro.version>1.11.3</avro.version>
+		<avro-maven-plugin.version>${avro.version}</avro-maven-plugin.version>
+		<protobuf.version>3.23.4</protobuf.version>
+		<grpc.version>1.63.0</grpc.version>
+		<grpc-spring-boot-starter.version>3.1.0.RELEASE</grpc-spring-boot-starter.version>
 	</properties>
 
     <dependencyManagement>
@@ -43,6 +50,42 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<dependency>
+				<groupId>org.apache.kafka</groupId>
+				<artifactId>kafka-clients</artifactId>
+				<version>${kafka-clients.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro</artifactId>
+				<version>${avro.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.devh</groupId>
+				<artifactId>grpc-server-spring-boot-starter</artifactId>
+				<version>${grpc-spring-boot-starter.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.grpc</groupId>
+				<artifactId>grpc-stub</artifactId>
+				<version>${grpc.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.grpc</groupId>
+				<artifactId>grpc-protobuf</artifactId>
+				<version>${grpc.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.devh</groupId>
+				<artifactId>grpc-client-spring-boot-starter</artifactId>
+				<version>${grpc-spring-boot-starter.version}</version>
+			</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -57,6 +100,11 @@
 							<spring.profiles.active>test</spring.profiles.active>
 						</systemPropertyVariables>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.avro</groupId>
+					<artifactId>avro-maven-plugin</artifactId>
+					<version>${avro-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

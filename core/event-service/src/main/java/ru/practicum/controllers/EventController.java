@@ -1,5 +1,6 @@
 package ru.practicum.controllers;
 
+import collector.UserAction;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -7,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.client.EventClient;
 import ru.practicum.dto.event.EventFilterDto;
 import ru.practicum.dto.event.EventFullDto;
+import ru.practicum.dto.event.EventRecommendationDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.enums.EventSort;
 import ru.practicum.services.EventService;
-import ru.practicum.services.StatEventService;
+import ru.practicum.services.RecommendationService;
+import ru.practicum.stats.CollectorClient;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -21,7 +24,8 @@ import java.util.List;
 @RequestMapping(path = "/events")
 public class EventController implements EventClient {
     private final EventService eventService;
-    private final StatEventService statEventService;
+    private final CollectorClient collectorClient;
+    private final RecommendationService recommendationService;
 
     @GetMapping
     public Collection<EventShortDto> getEvents(@RequestParam(required = false) String text,
@@ -34,19 +38,29 @@ public class EventController implements EventClient {
                                                @RequestParam(defaultValue = "0") Integer from,
                                                @RequestParam(defaultValue = "10") Integer size,
                                                HttpServletRequest request) {
-        Collection<EventShortDto> events = eventService.getEvents(new EventFilterDto(text, categories, paid, rangeStart, rangeEnd, onlyAvailable),
+        return eventService.getEvents(new EventFilterDto(text, categories, paid, rangeStart, rangeEnd, onlyAvailable),
                 sort,
                 from,
                 size
         );
-        statEventService.hit(request.getRequestURI(), request.getRemoteAddr());
-        return events;
     }
 
     @GetMapping("/{id}")
-    public EventFullDto find(@PathVariable Long id, HttpServletRequest request) {
+    public EventFullDto find(@PathVariable Long id, @RequestHeader("X-EWM-USER-ID") long userId, HttpServletRequest request) {
         EventFullDto event = eventService.find(id);
-        statEventService.hit(request.getRequestURI(), request.getRemoteAddr());
+        collectorClient.sendUserAction(userId, id, UserAction.ActionTypeProto.ACTION_VIEW);
         return event;
+    }
+
+    @GetMapping("/recommendations")
+    public List<EventRecommendationDto> getRecommendations(
+            @RequestHeader("X-EWM-USER-ID") long userId, @RequestParam(name = "size", defaultValue = "10") int size) {
+        return recommendationService.getRecommendations(userId, size);
+    }
+
+    @PutMapping("/{eventId}/like")
+    public void addLike(@PathVariable Long eventId,
+                          @RequestHeader("X-EWM-USER-ID") long userId) {
+        collectorClient.sendUserAction(userId, eventId, UserAction.ActionTypeProto.ACTION_LIKE);
     }
 }
